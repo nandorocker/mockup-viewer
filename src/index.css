@@ -136,3 +136,42 @@ body {
 .toast-fade.show {
   opacity: 1;
 }
+
+/* Viewer */
+.viewer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  touch-action: pan-y;
+}
+
+.viewer-bg {
+  position: absolute;
+  /* 851/1179 ≈ 0.72180 */
+  top: calc((100vh - 100vw) / 2 - 0.72180 * 100vw);
+  left: 0;
+  width: 100vw;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.viewer-mockup {
+  position: absolute;
+  top: calc((100vh - 100vw) / 2);
+  left: 0;
+  width: 100vw;
+  height: 100vw;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.viewer-mockup.no-transition {
+  transition: none;
+}
