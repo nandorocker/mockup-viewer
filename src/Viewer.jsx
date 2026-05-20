@@ -4,13 +4,17 @@ import { flatSlides, firstSlideIndex } from './concepts.js'
 import Toast from './Toast.jsx'
 
 const SWIPE_THRESHOLD = 50 // px
+const ANIMATION_DURATION = 300 // ms — must match CSS
 
 export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
-  const [globalIndex, setGlobalIndex] = useState(() => firstSlideIndex(initialConceptId))
+  const globalIndexRef = useRef(firstSlideIndex(initialConceptId))
+  const [globalIndex, setGlobalIndex] = useState(globalIndexRef.current)
+  const [prevIndex, setPrevIndex] = useState(null)
+  const [slideDirection, setSlideDirection] = useState(null) // 'left' | 'right'
   // toastMode: 'hidden' | 'auto' | 'manual'
   const [toastMode, setToastMode] = useState('auto')
-  const [slideDirection, setSlideDirection] = useState(null) // 'left' | 'right' | null
   const autoHideTimer = useRef(null)
+  const animationTimer = useRef(null)
   const touchStartX = useRef(null)
 
   const currentSlide = flatSlides[globalIndex]
@@ -41,7 +45,10 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
   // Show toast on mount
   useEffect(() => {
     showToastAuto()
-    return () => clearAutoTimer()
+    return () => {
+      clearAutoTimer()
+      if (animationTimer.current) clearTimeout(animationTimer.current)
+    }
   }, [])
 
   // Preload adjacent slides for smooth swiping
@@ -57,16 +64,25 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
 
   // --- Navigation ---
   const navigate = useCallback((delta) => {
-    setSlideDirection(delta > 0 ? 'left' : 'right')
-    setGlobalIndex((prev) => {
-      const next = prev + delta
-      if (next < 0 || next >= flatSlides.length) return prev
-      const nextSlide = flatSlides[next]
-      if (nextSlide.conceptId !== flatSlides[prev].conceptId) {
-        onConceptChange(nextSlide.conceptId)
-      }
-      return next
-    })
+    const currentIdx = globalIndexRef.current
+    const next = currentIdx + delta
+    if (next < 0 || next >= flatSlides.length) return
+
+    const dir = delta > 0 ? 'left' : 'right'
+    setPrevIndex(currentIdx)
+    setSlideDirection(dir)
+    setGlobalIndex(next)
+    globalIndexRef.current = next
+
+    // Clear prev frame after animation completes
+    if (animationTimer.current) clearTimeout(animationTimer.current)
+    animationTimer.current = setTimeout(() => setPrevIndex(null), ANIMATION_DURATION)
+
+    const nextSlide = flatSlides[next]
+    if (nextSlide.conceptId !== flatSlides[currentIdx].conceptId) {
+      onConceptChange(nextSlide.conceptId)
+    }
+
     showToastAuto()
   }, [onConceptChange])
 
@@ -81,11 +97,9 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
     touchStartX.current = null
 
     if (Math.abs(dx) >= SWIPE_THRESHOLD) {
-      // swipe
       clearAutoTimer()
       navigate(dx < 0 ? 1 : -1)
     } else {
-      // tap
       handleScreenTap()
     }
   }
@@ -98,22 +112,17 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <div
-        key={currentSlide.filename}
-        className={`viewer-frame${slideDirection ? ` slide-${slideDirection}` : ''}`}
-      >
-        <img
-          className="viewer-bg"
-          src="/images/linkedin_tester.png"
-          alt=""
-          draggable={false}
-        />
-        <img
-          className="viewer-mockup"
-          src={`/images/${currentSlide.filename}`}
-          alt={currentSlide.conceptName}
-          draggable={false}
-        />
+      {/* Outgoing frame — animates out */}
+      {prevIndex !== null && (
+        <div className={`viewer-frame exiting-${slideDirection}`}>
+          <img className="viewer-bg" src="/images/linkedin_tester.png" alt="" draggable={false} />
+          <img className="viewer-mockup" src={`/images/${flatSlides[prevIndex].filename}`} alt="" draggable={false} />
+        </div>
+      )}
+      {/* Incoming frame — animates in */}
+      <div className={slideDirection ? `viewer-frame entering-${slideDirection}` : 'viewer-frame'}>
+        <img className="viewer-bg" src="/images/linkedin_tester.png" alt="" draggable={false} />
+        <img className="viewer-mockup" src={`/images/${currentSlide.filename}`} alt={currentSlide.conceptName} draggable={false} />
       </div>
       <Toast
         conceptName={currentSlide.conceptName}

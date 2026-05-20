@@ -155,8 +155,7 @@ body {
 
 .viewer-bg {
   position: absolute;
-  /* 851/1179 ≈ 0.72180 */
-  top: calc((100vh - 100vw) / 2 - 0.72180 * 100vw);
+  top: 0;
   left: 0;
   width: 100vw;
   height: auto;
@@ -167,7 +166,8 @@ body {
 
 .viewer-mockup {
   position: absolute;
-  top: calc((100vh - 100vw) / 2);
+  /* 851/1179 ≈ 0.72180 — magenta zone offset from top of background */
+  top: calc(0.72180 * 100vw);
   left: 0;
   width: 100vw;
   height: 100vw;
@@ -187,10 +187,30 @@ body {
   to   { transform: translateX(0); }
 }
 
-.viewer-frame.slide-left {
+@keyframes slide-out-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+@keyframes slide-out-right {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+
+/* Incoming frame */
+.viewer-frame.entering-left {
   animation: slide-in-from-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.viewer-frame.slide-right {
+.viewer-frame.entering-right {
   animation: slide-in-from-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Outgoing frame */
+.viewer-frame.exiting-left {
+  animation: slide-out-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.viewer-frame.exiting-right {
+  animation: slide-out-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
