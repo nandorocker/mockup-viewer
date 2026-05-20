@@ -26,5 +26,11 @@ export default function App() {
   if (conceptId) {
     return <Viewer initialConceptId={conceptId} onBack={() => navigateTo(null)} onConceptChange={(id) => navigateTo(id)} />
   }
-  return <Landing onSelect={(id) => navigateTo(id)} />
+  return (
+    <div className="desktop-phone-stage desktop-phone-stage--landing">
+      <div className="desktop-phone-shell">
+        <Landing onSelect={(id) => navigateTo(id)} />
+      </div>
+    </div>
+  )
 }
