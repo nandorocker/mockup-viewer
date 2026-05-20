@@ -80,3 +80,59 @@ body {
   white-space: nowrap;
   margin-left: 12px;
 }
+
+/* Toast overlay */
+.toast-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.toast-overlay.visible {
+  pointer-events: auto;
+}
+
+.toast-back-btn {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top, 20px));
+  left: 20px;
+  background: var(--color-overlay-bg);
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 20px;
+  line-height: 1;
+  padding: 8px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.25s;
+  pointer-events: auto;
+}
+
+.toast-label {
+  position: absolute;
+  bottom: max(40px, env(safe-area-inset-bottom, 40px));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-overlay-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--toast-radius);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* fade transition */
+.toast-fade {
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.toast-fade.show {
+  opacity: 1;
+}
