@@ -76,7 +76,10 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
 
     // Clear prev frame after animation completes
     if (animationTimer.current) clearTimeout(animationTimer.current)
-    animationTimer.current = setTimeout(() => setPrevIndex(null), ANIMATION_DURATION)
+    animationTimer.current = setTimeout(() => {
+      setPrevIndex(null)
+      setSlideDirection(null)
+    }, ANIMATION_DURATION)
 
     const nextSlide = flatSlides[next]
     if (nextSlide.conceptId !== flatSlides[currentIdx].conceptId) {
