@@ -9,6 +9,7 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
   const [globalIndex, setGlobalIndex] = useState(() => firstSlideIndex(initialConceptId))
   // toastMode: 'hidden' | 'auto' | 'manual'
   const [toastMode, setToastMode] = useState('auto')
+  const [slideDirection, setSlideDirection] = useState(null) // 'left' | 'right' | null
   const autoHideTimer = useRef(null)
   const touchStartX = useRef(null)
 
@@ -45,6 +46,7 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
 
   // --- Navigation ---
   const navigate = useCallback((delta) => {
+    setSlideDirection(delta > 0 ? 'left' : 'right')
     setGlobalIndex((prev) => {
       const next = prev + delta
       if (next < 0 || next >= flatSlides.length) return prev
@@ -93,7 +95,7 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
       />
       <img
         key={currentSlide.filename}
-        className="viewer-mockup"
+        className={`viewer-mockup${slideDirection ? ` slide-${slideDirection}` : ''}`}
         src={`/images/${currentSlide.filename}`}
         alt={currentSlide.conceptName}
         draggable={false}
