@@ -147,6 +147,12 @@ body {
   touch-action: pan-y;
 }
 
+.viewer-frame {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
 .viewer-bg {
   position: absolute;
   /* 851/1179 ≈ 0.72180 */
@@ -169,7 +175,6 @@ body {
   user-select: none;
   pointer-events: none;
   -webkit-user-drag: none;
-  will-change: transform;
 }
 
 @keyframes slide-in-from-right {
@@ -182,10 +187,10 @@ body {
   to   { transform: translateX(0); }
 }
 
-.viewer-mockup.slide-left {
+.viewer-frame.slide-left {
   animation: slide-in-from-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.viewer-mockup.slide-right {
+.viewer-frame.slide-right {
   animation: slide-in-from-left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }

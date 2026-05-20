@@ -98,19 +98,23 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <img
-        className="viewer-bg"
-        src="/images/linkedin_tester.png"
-        alt=""
-        draggable={false}
-      />
-      <img
+      <div
         key={currentSlide.filename}
-        className={`viewer-mockup${slideDirection ? ` slide-${slideDirection}` : ''}`}
-        src={`/images/${currentSlide.filename}`}
-        alt={currentSlide.conceptName}
-        draggable={false}
-      />
+        className={`viewer-frame${slideDirection ? ` slide-${slideDirection}` : ''}`}
+      >
+        <img
+          className="viewer-bg"
+          src="/images/linkedin_tester.png"
+          alt=""
+          draggable={false}
+        />
+        <img
+          className="viewer-mockup"
+          src={`/images/${currentSlide.filename}`}
+          alt={currentSlide.conceptName}
+          draggable={false}
+        />
+      </div>
       <Toast
         conceptName={currentSlide.conceptName}
         visible={toastVisible}
