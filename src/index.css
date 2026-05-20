@@ -143,8 +143,13 @@ body {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background: #000;
+  background: #fff;
   touch-action: pan-y;
+}
+
+.phone-frame {
+  position: absolute;
+  inset: 0;
 }
 
 .viewer-frame {
@@ -213,4 +218,66 @@ body {
 
 .viewer-frame.exiting-right {
   animation: slide-out-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Desktop phone frame */
+@media (min-width: 768px) {
+  .viewer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+  }
+
+  .phone-frame {
+    position: relative;
+    width: 393px;
+    height: 852px;
+    max-height: 90vh;
+    aspect-ratio: 393 / 852;
+    border-radius: 48px;
+    background: #000;
+    border: 3px solid #333;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+    cursor: grab;
+  }
+
+  .phone-frame:active {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .phone-frame .viewer-frame {
+    width: 100%;
+    height: 100%;
+  }
+
+  .phone-frame .viewer-bg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .phone-frame .viewer-mockup {
+    top: 33.3%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .phone-frame .toast-overlay {
+    position: absolute;
+  }
+
+  .phone-frame .toast-back-btn {
+    top: 16px;
+    left: 16px;
+  }
+
+  .phone-frame .toast-label {
+    bottom: 32px;
+  }
 }

@@ -107,31 +107,47 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
     }
   }
 
+  // --- Mouse handling (desktop) ---
+  function onMouseDown(e) {
+    touchStartX.current = e.clientX
+  }
+
+  function onMouseUp(e) {
+    if (touchStartX.current === null) return
+    const dx = e.clientX - touchStartX.current
+    touchStartX.current = null
+
+    if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+      clearAutoTimer()
+      navigate(dx < 0 ? 1 : -1)
+    } else {
+      handleScreenTap()
+    }
+  }
+
   const toastVisible = toastMode !== 'hidden'
 
   return (
-    <div
-      className="viewer"
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-    >
-      {/* Outgoing frame — animates out */}
-      {prevIndex !== null && (
-        <div className={`viewer-frame exiting-${slideDirection}`}>
+    <div className="viewer">
+      <div className="phone-frame" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+        {/* Outgoing frame — animates out */}
+        {prevIndex !== null && (
+          <div className={`viewer-frame exiting-${slideDirection}`}>
+            <img className="viewer-bg" src="/images/linkedin_tester.png" alt="" draggable={false} />
+            <img className="viewer-mockup" src={`/images/${flatSlides[prevIndex].filename}`} alt="" draggable={false} />
+          </div>
+        )}
+        {/* Incoming frame — animates in */}
+        <div className={slideDirection ? `viewer-frame entering-${slideDirection}` : 'viewer-frame'}>
           <img className="viewer-bg" src="/images/linkedin_tester.png" alt="" draggable={false} />
-          <img className="viewer-mockup" src={`/images/${flatSlides[prevIndex].filename}`} alt="" draggable={false} />
+          <img className="viewer-mockup" src={`/images/${currentSlide.filename}`} alt={currentSlide.conceptName} draggable={false} />
         </div>
-      )}
-      {/* Incoming frame — animates in */}
-      <div className={slideDirection ? `viewer-frame entering-${slideDirection}` : 'viewer-frame'}>
-        <img className="viewer-bg" src="/images/linkedin_tester.png" alt="" draggable={false} />
-        <img className="viewer-mockup" src={`/images/${currentSlide.filename}`} alt={currentSlide.conceptName} draggable={false} />
+        <Toast
+          conceptName={currentSlide.conceptName}
+          visible={toastVisible}
+          onBack={onBack}
+        />
       </div>
-      <Toast
-        conceptName={currentSlide.conceptName}
-        visible={toastVisible}
-        onBack={onBack}
-      />
     </div>
   )
 }
