@@ -13,6 +13,7 @@ export default function Toast({ conceptName, visible, onBack }) {
     <div className={`toast-overlay${visible ? ' visible' : ''}`}>
       <button
         className={`toast-back-btn toast-fade${visible ? ' show' : ''}`}
+        onTouchEnd={(e) => { e.stopPropagation(); onBack() }}
         onClick={onBack}
         aria-label="Back to concepts"
       >

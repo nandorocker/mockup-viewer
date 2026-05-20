@@ -44,6 +44,17 @@ export default function Viewer({ initialConceptId, onBack, onConceptChange }) {
     return () => clearAutoTimer()
   }, [])
 
+  // Preload adjacent slides for smooth swiping
+  useEffect(() => {
+    const indices = [globalIndex - 1, globalIndex + 1].filter(
+      (i) => i >= 0 && i < flatSlides.length
+    )
+    indices.forEach((i) => {
+      const img = new Image()
+      img.src = `/images/${flatSlides[i].filename}`
+    })
+  }, [globalIndex])
+
   // --- Navigation ---
   const navigate = useCallback((delta) => {
     setSlideDirection(delta > 0 ? 'left' : 'right')
