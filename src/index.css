@@ -12,8 +12,8 @@
   --color-text-muted: #888;
   --color-overlay-bg: rgba(0, 0, 0, 0.65);
   --toast-radius: 999px;
-  --phone-width: min(393px, calc(82vh * 393 / 640));
-  --phone-height: calc(var(--phone-width) * 640 / 393);
+  --phone-width: min(393px, calc(90vh * 393 / 852));
+  --phone-height: calc(var(--phone-width) * 852 / 393);
 }
 
 html, body, #root {
@@ -247,7 +247,7 @@ body {
     width: var(--phone-width);
     height: var(--phone-height);
     min-height: 0;
-    aspect-ratio: 393 / 640;
+    aspect-ratio: 393 / 852;
     border-radius: 48px;
     background: var(--color-bg);
     border: 3px solid #333;
@@ -271,7 +271,7 @@ body {
     position: relative;
     width: var(--phone-width);
     height: var(--phone-height);
-    aspect-ratio: 393 / 640;
+    aspect-ratio: 393 / 852;
     border-radius: 48px;
     background: #000;
     border: 3px solid #333;
