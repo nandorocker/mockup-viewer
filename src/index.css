@@ -12,6 +12,8 @@
   --color-text-muted: #888;
   --color-overlay-bg: rgba(0, 0, 0, 0.65);
   --toast-radius: 999px;
+  --phone-width: min(393px, calc(90vh * 393 / 852));
+  --phone-height: calc(var(--phone-width) * 852 / 393);
 }
 
 html, body, #root {
@@ -242,9 +244,8 @@ body {
   }
 
   .desktop-phone-stage--landing .desktop-phone-shell {
-    width: 393px;
-    height: 852px;
-    max-height: 90vh;
+    width: var(--phone-width);
+    height: var(--phone-height);
     aspect-ratio: 393 / 852;
     border-radius: 48px;
     background: var(--color-bg);
@@ -267,9 +268,8 @@ body {
 
   .phone-frame {
     position: relative;
-    width: 393px;
-    height: 852px;
-    max-height: 90vh;
+    width: var(--phone-width);
+    height: var(--phone-height);
     aspect-ratio: 393 / 852;
     border-radius: 48px;
     background: #000;
