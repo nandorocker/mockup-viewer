@@ -246,6 +246,7 @@ body {
   .desktop-phone-stage--landing .desktop-phone-shell {
     width: var(--phone-width);
     height: var(--phone-height);
+    min-height: 0;
     aspect-ratio: 393 / 640;
     border-radius: 48px;
     background: var(--color-bg);
