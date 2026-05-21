@@ -12,8 +12,8 @@
   --color-text-muted: #888;
   --color-overlay-bg: rgba(0, 0, 0, 0.65);
   --toast-radius: 999px;
-  --phone-width: min(393px, calc(86vh * 393 / 760));
-  --phone-height: calc(var(--phone-width) * 760 / 393);
+  --phone-width: min(393px, calc(82vh * 393 / 640));
+  --phone-height: calc(var(--phone-width) * 640 / 393);
 }
 
 html, body, #root {
@@ -246,7 +246,7 @@ body {
   .desktop-phone-stage--landing .desktop-phone-shell {
     width: var(--phone-width);
     height: var(--phone-height);
-    aspect-ratio: 393 / 760;
+    aspect-ratio: 393 / 640;
     border-radius: 48px;
     background: var(--color-bg);
     border: 3px solid #333;
@@ -270,7 +270,7 @@ body {
     position: relative;
     width: var(--phone-width);
     height: var(--phone-height);
-    aspect-ratio: 393 / 760;
+    aspect-ratio: 393 / 640;
     border-radius: 48px;
     background: #000;
     border: 3px solid #333;
